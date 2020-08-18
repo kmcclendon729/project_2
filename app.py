@@ -22,15 +22,47 @@ def after_request(response):
 def home():
 
     collection = mongo.db.openVegas.find_one()
-    return render_template('main.html', vacation=collection)
+    return render_template('yelp.html', vacation=collection)
 
+
+@app.route("/yelp.html")
+def back():
+    return render_template('yelp.html')
+
+
+@app.route("/about.html")
+def about():
+    return render_template('about.html')
+
+    
 # Route to get data
 @app.route("/api")
 def api():
     
     collections = mongo.db.openVegas.find({}, {'_id': False})
-    data = [collection for collection in collections]
+    businesses = [collection for collection in collections]
+    data = {
+        "businesses": businesses
+    }
     return jsonify(data)
+
+@app.route("/maps.html")
+def restaurantData():
+    collection = mongo.db.openVegas.find_one()
+    return render_template('maps.html', vacation=collection)
+
+@app.route("/heatmap.html")
+def ratingmap():
+    return render_template('heatmap.html');
+
+@app.route("/heatmaps.html")
+def heatmap():
+
+    return render_template('heatmaps.html'); 
+
+@app.route("/charts.html")
+def charts():
+    return render_template('charts.html');
 
 if __name__ == '__main__':
     app.run(debug=True)
